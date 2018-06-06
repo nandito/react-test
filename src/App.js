@@ -1,23 +1,26 @@
 import React, { Component } from 'react'
+import dictionary from './dictionary'
 
 class App extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      language: 'en'
+      language: 'en',
     }
   }
 
   handleLanguageSwitch = (nextLang) => {
     this.setState({
-      language: nextLang
+      language: nextLang,
     })
   }
 
   render() {
+    const { language } = this.state
+
     return (
-      <Provider value={this.state.language}>
+      <Provider value={{ language }}>
         <Header />
 
         <Content />
@@ -29,24 +32,14 @@ class App extends Component {
   }
 }
 
+
 const { Consumer, Provider } = React.createContext('en')
 
-const dictionary = {
-  GREETING: {
-    en: 'Hello World!',
-    hu: 'Helló Világ!',
-  },
-  CONTENT: {
-    en: 'This is the content in English.',
-    hu: 'Ez itt a magyar nyelvű tartalom.',
-  }
-}
-
-const Header = () => (
+export const Header = () => (
   <Consumer>
-    {value => (
+    {({ language }) => (
       <header>
-        <h1>{dictionary['GREETING'][value]}</h1>
+        <h1>{dictionary['GREETING'][language]}</h1>
       </header>
     )}
   </Consumer>
@@ -54,7 +47,7 @@ const Header = () => (
 
 const Content = () => (
   <Consumer>
-    {value => <div>{dictionary['CONTENT'][value]}</div>}
+    {({ language }) => <div>{dictionary['CONTENT'][language]}</div>}
   </Consumer>
 )
 
